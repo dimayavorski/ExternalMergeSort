@@ -2,9 +2,11 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            //100_000_000 1.5GB
+            var fileGenerator = new FileGenerator(maxNumber: 100000, maxUniqueWords: 300);
+            await fileGenerator.GenerateFile(300_000);
         }
     }
 }
