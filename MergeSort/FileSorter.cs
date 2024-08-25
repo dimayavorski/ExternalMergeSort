@@ -49,6 +49,7 @@ namespace MergeSort
                         {
                             storage.Add(key, new List<int> { row.Number });
                         }
+
                         chunkSize += (ulong)Encoding.UTF8.GetBytes(row.ToString()).Length;
                     }
 
