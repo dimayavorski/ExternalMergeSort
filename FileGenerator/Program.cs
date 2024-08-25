@@ -4,9 +4,8 @@
     {
         static async Task Main(string[] args)
         {
-            //100_000_000 1.5GB
-            var fileGenerator = new FileGenerator(maxNumber: 100000, maxUniqueWords: 300);
-            await fileGenerator.GenerateFile(300_000);
+            var fileGenerator = new FileGenerator(maxNumber: 10000000, maxUniqueWords: 5000);
+            await fileGenerator.GenerateFile(1);
         }
     }
 }

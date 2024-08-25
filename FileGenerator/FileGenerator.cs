@@ -15,18 +15,33 @@ namespace FileGenerator
             _maxNumber = maxNumber;
             _maxUniqueWords = maxUniqueWords;
         }
-        public async Task GenerateFile(int numberOfRows)
-        {
-            RemoveFileIfExists(_fileName);
 
+        /// <summary>
+        /// File size in GB
+        /// </summary>
+        /// <param name="fileSize"></param>
+        /// <returns></returns>
+        public async Task GenerateFile(int fileSize)
+        {
+            var fileSizeInBytes = GetFileSizeInBytes(fileSize);
+            RemoveFileIfExists(_fileName);
             var randomWords = GenerateWords(_maxUniqueWords);
+
             using (var writer = new StreamWriter(_fileName))
-            {
-                for (int i = 0; i < numberOfRows; i++)
+            {   
+                long currentFileSize = 0;
+                while (currentFileSize < fileSizeInBytes)
                 {
-                    await writer.WriteLineAsync(GetRandomNumber(_maxNumber) + ". " + randomWords[_faker.Random.Number(0, randomWords.Length - 1)]);
+                    var row = GetRandomNumber(_maxNumber) + ". " + randomWords[_faker.Random.Number(0, randomWords.Length - 1)];
+                    await writer.WriteLineAsync(row);
+                    currentFileSize += System.Text.Encoding.UTF8.GetBytes(row).Length + Environment.NewLine.Length;
                 }
             }
+        }
+
+        private long GetFileSizeInBytes(int fileSize)
+        {
+            return (long)fileSize * 1024 * 1024 * 1024;
         }
 
         private string[] GenerateWords(int numberOfWords)
