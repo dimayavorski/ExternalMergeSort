@@ -4,8 +4,6 @@ namespace FileGenerator
 {
     internal class FileGenerator
     {
-        private const string _fileName = "input.txt";
-
         private Faker _faker = new Faker();
         private readonly int _maxNumber;
         private readonly int _maxUniqueWords;
@@ -21,13 +19,13 @@ namespace FileGenerator
         /// </summary>
         /// <param name="fileSize"></param>
         /// <returns></returns>
-        public async Task GenerateFile(int fileSize)
+        public async Task GenerateFile(string filePath, int fileSize)
         {
             var fileSizeInBytes = GetFileSizeInBytes(fileSize);
-            RemoveFileIfExists(_fileName);
+            RemoveFileIfExists(filePath);
             var randomWords = GenerateWords(_maxUniqueWords);
 
-            using (var writer = new StreamWriter(_fileName))
+            using (var writer = new StreamWriter(filePath))
             {   
                 long currentFileSize = 0;
                 while (currentFileSize < fileSizeInBytes)
@@ -54,11 +52,11 @@ namespace FileGenerator
             return _faker.Random.Int(1, maxNumber);
         }
 
-        private void RemoveFileIfExists(string _fileName)
+        private void RemoveFileIfExists(string fileName)
         {
-            if(File.Exists(_fileName)) 
+            if(File.Exists(fileName)) 
             {
-                File.Delete(_fileName);
+                File.Delete(fileName);
             }
         }
     }

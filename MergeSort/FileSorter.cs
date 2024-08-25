@@ -6,14 +6,13 @@ namespace MergeSort
 {
     internal class FileSorter
     {
-        private const string _outputFilePath = "output.txt";
         private const int bytesOfRamToProcessOneByteOfFile = 3;
 
-        public void SortFile(string filePath)
+        public void SortFile(string filePath, string outputFilePath)
         {
             var maximumChunSize = GetChunkSize();
             var temporaryFiles = SplitFile(filePath, maximumChunSize);
-            GenerateOutput(temporaryFiles);
+            GenerateOutput(temporaryFiles, outputFilePath);
             DeleteTemporaryFiles(temporaryFiles);
         }
 
@@ -64,7 +63,7 @@ namespace MergeSort
             return temporaryFiles.ToArray();
         }
 
-        private void GenerateOutput(string[] files)
+        private void GenerateOutput(string[] files, string outputFilePath)
         {
             var rows = files.Select(x =>
             {
@@ -75,7 +74,7 @@ namespace MergeSort
             try
             {
                 var sortedList = new List<Row>();
-                using (var writer = new StreamWriter(_outputFilePath))
+                using (var writer = new StreamWriter(outputFilePath))
                 {
                     while (rows.Any())
                     {
